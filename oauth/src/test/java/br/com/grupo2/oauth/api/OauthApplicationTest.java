@@ -1,4 +1,4 @@
-package br.com.grupo2.backend.api;
+package br.com.grupo2.oauth.api;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
