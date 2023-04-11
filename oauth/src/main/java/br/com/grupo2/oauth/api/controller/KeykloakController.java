@@ -1,14 +1,19 @@
 package br.com.grupo2.oauth.api.controller;
 
+import br.com.grupo2.oauth.api.config.exception.Grupo2Exception;
+import br.com.grupo2.oauth.api.config.exception.HttpException;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/keykloak")
 public class KeykloakController {
+
 
 
 
@@ -19,7 +24,13 @@ public class KeykloakController {
             @RequestBody(required = false) String usuarios
 
     ) {
-                return new ResponseEntity<>(HttpStatus.CREATED);
+        try {
+
+
+        } catch (Grupo2Exception ex) {
+            throw new HttpException("", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
