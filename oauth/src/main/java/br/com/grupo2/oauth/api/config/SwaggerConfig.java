@@ -14,41 +14,41 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 //@EnableSwagger2
-public class SwaggerConfig /*implements WebMvcConfigurer*/ {
+public class SwaggerConfig implements WebMvcConfigurer {
 
-    @Value("${swagger.titulo}")
-    private String titulo;
-
-    @Value("${swagger.versao}")
-    private String versao;
-
-    @Value("${swagger.descricao}")
-    private String descricao;
-
-    @Bean
-    public Docket detalheApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(informacoesApi());
-    }
-
-    private ApiInfo informacoesApi() {
-        return new ApiInfoBuilder().title(this.titulo)
-                .version(this.versao).description(this.descricao).build();
-    }
-
-//    private final String baseUrl;
+//    @Value("${swagger.titulo}")
+//    private String titulo;
 //
-//    public SwaggerConfig(@Value("${application.base.url}") String baseUrl) {
-//        this.baseUrl = baseUrl;
+//    @Value("${swagger.versao}")
+//    private String versao;
+//
+//    @Value("${swagger.descricao}")
+//    private String descricao;
+
+//    @Bean
+//    public Docket detalheApi() {
+//        return new Docket(DocumentationType.SWAGGER_2)
+//                .select()
+//                .apis(RequestHandlerSelectors.any())
+//                .paths(PathSelectors.any())
+//                .build()
+//                .apiInfo(informacoesApi());
 //    }
 //
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController(baseUrl + "/swagger-ui/")
-//                .setViewName("forward:" + baseUrl + "/swagger-ui/index.html");
+//    private ApiInfo informacoesApi() {
+//        return new ApiInfoBuilder().title(this.titulo)
+//                .version(this.versao).description(this.descricao).build();
 //    }
+
+    private final String baseUrl;
+
+    public SwaggerConfig(@Value("${application.base.url}") String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController(baseUrl + "/swagger-ui/")
+                .setViewName("forward:" + baseUrl + "/swagger-ui/index.html");
+    }
 }

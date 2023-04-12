@@ -1,4 +1,4 @@
-package br.com.grupo2.oauth.api.DTO;
+package br.com.grupo2.oauth.api.config;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.OAuth2Constants;
@@ -42,8 +42,6 @@ public class RequestToken {
                         .build())
                 .build();
     }
-
-
 
     public void setClientId(String clientId) {
         this.clientId = clientId;

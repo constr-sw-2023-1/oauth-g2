@@ -1,26 +1,30 @@
 package br.com.grupo2.oauth.api.service.auth;
 
-import br.com.grupo2.oauth.api.DTO.RequestToken;
+import br.com.grupo2.oauth.api.config.RequestToken;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-
-import java.net.*;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 @Log4j2
 @Service
 public class AutenticacaoService {
 
-    public void requestTokenLogin(RequestToken requestToken) throws Exception {
+    public void requestTokenLogin(RequestToken requestToken, String contentType) throws Exception {
 
         String url = "http://localhost:8090/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // add request header
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+        con.setRequestProperty("Content-Type", contentType);
 
 
         Map<String, String> parameters = new HashMap<>();
