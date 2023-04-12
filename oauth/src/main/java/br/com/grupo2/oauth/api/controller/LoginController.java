@@ -5,18 +5,16 @@ import br.com.grupo2.oauth.api.config.exception.Grupo2Exception;
 import br.com.grupo2.oauth.api.config.exception.HttpException;
 import br.com.grupo2.oauth.api.service.auth.AutenticacaoService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Log4j2
 @RestController
@@ -34,7 +32,7 @@ public class LoginController {
     ) {
         try {
             if (requestToken != null) {
-                log.info(authService.requestTokenLogin(requestToken));
+                authService.requestTokenLogin(requestToken);
             }
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Grupo2Exception ex) {

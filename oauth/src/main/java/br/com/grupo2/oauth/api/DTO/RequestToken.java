@@ -18,7 +18,7 @@ public class RequestToken {
 
     public RequestToken() {}
 
-    public RequestToken(@Value("{$keycloak.resource}") String clientId, @Value("{$keycloak.credentials.secret}") String clientSecret, @Value("{$keycloak.username}") String username, @Value("{$keycloak.password}") String password,
+    public RequestToken(@Value("{$keycloak.resource}") String clientId, @Value("{$keycloak.credentials.secret}") String clientSecret, @Value("{$variables.keycloak.username}") String username, @Value("{$variables.keycloak.password}") String password,
                         @Value("{$spring.security.oauth2.client.registration.okta.authorization-grant-type}") String grantType, @Value("{token.url}") String authurl) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -92,6 +92,5 @@ public class RequestToken {
     public String getAuthurl() {
         return authurl;
     }
-
 
 }
