@@ -18,14 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.http.HttpResponse;
 
-
-@Log4j2
 @RestController
 @RequestMapping("api/login")
 public class LoginController {
 
     @Autowired
-    private AutenticacaoService authService;
+    AutenticacaoService authService;
 
     @Operation(summary = "Cria um login")
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })

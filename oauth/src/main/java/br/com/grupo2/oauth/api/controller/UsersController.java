@@ -8,9 +8,9 @@ import br.com.grupo2.oauth.api.config.exception.HttpException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
-import org.springframework.http.HttpHeaders;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +55,6 @@ public class UsersController {
         try {
             UserRepresentation userRepresentation = getUsuarioCriado(criacaoUsuarioDTO);
             keycloak.realm(realm).users().create(userRepresentation);
-
         } catch (Grupo2Exception e) {
             throw new HttpException("Não foi possível fazer a listagem", HttpStatus.NOT_FOUND);
         }
