@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
+
 
 @Log4j2
 @RestController
@@ -23,16 +25,12 @@ public class LoginController {
 
     @Operation(summary = "Cria um login")
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<?> realizaLogin (
+    public ResponseEntity<HttpResponse<?>> realizaLogin (
             @RequestBody(required = false) RequestToken requestToken,
             @RequestHeader(name = "Content-Type") String contentType
-
     ) {
         try {
-            if (requestToken != null) {
-                authService.requestTokenLogin(requestToken, contentType);
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.ok(authService.requestTokenLogin(requestToken, contentType));
         } catch (Grupo2Exception ex) {
             throw new HttpException("Não encontrado!", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
