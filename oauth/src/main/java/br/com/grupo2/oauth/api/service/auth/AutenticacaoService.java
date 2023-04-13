@@ -2,6 +2,8 @@ package br.com.grupo2.oauth.api.service.auth;
 
 import br.com.grupo2.oauth.api.config.RequestToken;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -16,23 +18,22 @@ import java.util.Map;
 @Service
 public class AutenticacaoService {
 
-    public void requestTokenLogin(RequestToken requestToken, String contentType) throws Exception {
+    public void requestTokenLogin() throws Exception {
 
-        String url = "http://localhost:8090/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token";
+        String url = "http://keycloak:8090/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // add request header
-
-        con.setRequestProperty("Content-Type", contentType);
-
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("client_id", requestToken.getClientId());
-        parameters.put("client_secret", requestToken.getClientSecret());
-        parameters.put("username", requestToken.getUsername());
-        parameters.put("password", requestToken.getPassword());
-        parameters.put("grant_type", requestToken.getGrantType());
+        parameters.put("client_id", "oauth");
+        parameters.put("client_secret", "fsQ4jucS5s7bz4VohrDw7SBRRevlHVbG");
+        parameters.put("username", "admin");
+        parameters.put("password", "a12345678");
+        parameters.put("grant_type", "password");
 
         StringBuilder postData = new StringBuilder();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
@@ -46,6 +47,7 @@ public class AutenticacaoService {
 
         // send post request
         con.setDoOutput(true);
+        log.info(con.getOutputStream().toString());
         try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
             wr.write(postDataBytes);
         }
