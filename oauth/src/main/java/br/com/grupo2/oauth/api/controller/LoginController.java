@@ -5,12 +5,16 @@ import br.com.grupo2.oauth.api.config.exception.Grupo2Exception;
 import br.com.grupo2.oauth.api.config.exception.HttpException;
 import br.com.grupo2.oauth.api.service.auth.AutenticacaoService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.extern.log4j.Log4j2;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.http.HttpResponse;
 
