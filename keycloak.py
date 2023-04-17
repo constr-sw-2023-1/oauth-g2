@@ -5,11 +5,14 @@ import requests
 import json
 
 REALM_NAME = 'Construc-sw-2023-1'
-SERVER_URL = 'https://keycloak:8080/auth'
 CLIENT_ID = 'oauth'
-CLIENT_SECRET = 'fsQ4jucS5s7bz4VohrDw7SBRRevlHVbG'
-TOKEN_URL = 'http://keycloak:8080/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
-USERS_URL = "http://keycloak:8080/auth/admin/realms/Construc-sw-2023-1/users"
+CLIENT_SECRET = 'Wi5qctJ5jdHMpilcacB5lZtrPifypjYb'
+D_SERVER_URL = 'https://keycloak:8080/auth'
+D_TOKEN_URL = 'http://keycloak:8080/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
+D_USERS_URL = "http://keycloak:8080/auth/admin/realms/Construc-sw-2023-1/users"
+SERVER_URL = 'https://localhost:8090/auth'
+TOKEN_URL = 'http://localhost:8090/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
+USERS_URL = "http://localhost:8090/auth/admin/realms/Construc-sw-2023-1/users"
 
 app = Flask(__name__)
 
@@ -37,10 +40,13 @@ def generate_token():
 #this has some problems, the response doesnt works propperly
 @app.route('/users', methods=['POST'])
 def create_user():
+    new_user = {}
     token = request.headers.get('Authorization')
     url = USERS_URL
     headers = {'Content-Type': 'application/json', 'Authorization': token}
-    email = request.get_json().get('email')
+    payload = request.get_json()
+    email = payload.get('email')
+    print(email)
     # python não tankou o regex
     #
     #     if not re.match(r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:
@@ -52,14 +58,15 @@ def create_user():
     # , email):
     if not email or not re.match(r"[^@]+@[^@]+\.[^@]+", email):
        return jsonify({'error_code': 'OA-400','error_description': 'Bad Request: Missing email or badly formated email'}), 400
-    payload = request.get_json()
     response = requests.post(url, headers=headers, json=payload)
-    #response_json = response.json()
-    # userId = response.headers['Location'].split('/')[-1]
-    #print(response_json)
     if response.status_code == 409:
         return jsonify({'error_code':'OA-409','error_description' : 'Conflict: This username or email already exists'}), 409
-    return jsonify({'success': True, 'user': response.headers}), 201
+    if response.status_code == 201:
+        user_info = response.headers
+        new_user = {
+            'location': user_info['location'].split('/')[-1]
+        }
+    return jsonify(new_user), 201
 
 @app.route('/users', methods=['GET'])
 def get_users():
