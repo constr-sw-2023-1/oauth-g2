@@ -1,6 +1,6 @@
 import os
 import re
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect
 import requests
 import json
 
@@ -9,10 +9,10 @@ CLIENT_ID = 'oauth'
 CLIENT_SECRET = 'Wi5qctJ5jdHMpilcacB5lZtrPifypjYb'
 D_SERVER_URL = 'https://keycloak:8080/auth'
 D_TOKEN_URL = 'http://keycloak:8080/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
-D_USERS_URL = "http://keycloak:8080/auth/admin/realms/Construc-sw-2023-1/users"
+D_USERS_URL = "http://keycloak:8080/auth/admin/realms/Construc-sw-2023-1/users/"
 SERVER_URL = 'https://localhost:8090/auth'
 TOKEN_URL = 'http://localhost:8090/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
-USERS_URL = "http://localhost:8090/auth/admin/realms/Construc-sw-2023-1/users"
+USERS_URL = "http://localhost:8090/auth/admin/realms/Construc-sw-2023-1/users/"
 
 app = Flask(__name__)
 
@@ -66,7 +66,8 @@ def create_user():
         new_user = {
             'location': user_info['location'].split('/')[-1]
         }
-    return jsonify(new_user), 201
+    print(new_user)
+    return redirect(USERS_URL + new_user['location'], code=302)
 
 @app.route('/users', methods=['GET'])
 def get_users():
