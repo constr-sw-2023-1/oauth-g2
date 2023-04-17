@@ -2,7 +2,6 @@ import os
 import re
 from flask import Flask, request, jsonify, render_template, redirect
 import requests
-import json
 
 REALM_NAME = 'Construc-sw-2023-1'
 CLIENT_ID = 'oauth'
@@ -36,8 +35,6 @@ def generate_token():
         return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid username or password'}), 401
     return jsonify(response.json()), 200
 
-
-#this has some problems, the response doesnt works propperly
 @app.route('/users', methods=['POST'])
 def create_user():
     new_user = {}
@@ -77,7 +74,6 @@ def get_users():
     response = requests.get(url, headers=headers)
     return jsonify(response.json()), 200
 
-# for this to work propperly the POST method must be working
 @app.route('/users/<user_id>', methods=['GET'])
 def get_user(user_id):
     token = request.headers.get('Authorization')
@@ -94,14 +90,13 @@ def get_user(user_id):
         return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return jsonify(response.json()), 200
 
-# for this to work propperly the POST method must be working and a postman test request still needs to be created
 @app.route('/users/<user_id>', methods=['PUT'])
 def put_user(user_id):
     token = request.headers.get('Authorization')
     url = USERS_URL + user_id
-    headers = {'Authorization': token}
+    headers = {'Content-Type': 'application/json', 'Authorization': token}
     payload = request.get_json()
-    response = requests.get(url, headers=headers, json=payload)
+    response = requests.put(url, headers=headers, json=payload)
     
     if response.status_code == 400:
         return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request structure error'}), 400
@@ -113,14 +108,13 @@ def put_user(user_id):
         return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return jsonify({'success': True}), 200
     
-# for this to work propperly the POST method must be working and a postman test request still needs to be created
 @app.route('/users/<user_id>', methods=['PATCH'])
 def patch_user(user_id):
     token = request.headers.get('Authorization')
     url = USERS_URL + user_id
-    headers = {'Authorization': token}
+    headers = {'Content-Type': 'application/json','Authorization': token}
     payload = request.get_json()
-    response = requests.get(url, headers=headers, json=payload)
+    response = requests.patch(url, headers=headers, json=payload)
     
     if response.status_code == 400:
         return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request structure error'}), 400
@@ -132,7 +126,6 @@ def patch_user(user_id):
         return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return jsonify({'success': True}), 200
 
-# for this to work propperly the POST method must be working and a postman test request still needs to be created
 @app.route('/users/<user_id>', methods=['DELETE'])
 def delete_user(user_id):
     token = request.headers.get('Authorization')
@@ -153,6 +146,3 @@ def delete_user(user_id):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8085))
     app.run(host='0.0.0.0', port=8085, debug=True)
-
-
-
