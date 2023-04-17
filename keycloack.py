@@ -1,16 +1,21 @@
+import os
 import re
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import requests
 import json
 
 REALM_NAME = 'Construc-sw-2023-1'
-SERVER_URL = 'https://localhost:8090/auth'
+SERVER_URL = 'https://keycloak:8080/auth'
 CLIENT_ID = 'oauth'
 CLIENT_SECRET = 'fsQ4jucS5s7bz4VohrDw7SBRRevlHVbG'
-TOKEN_URL = 'http://localhost:8090/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
-USERS_URL = "http://localhost:8090/auth/admin/realms/Construc-sw-2023-1/users"
+TOKEN_URL = 'http://keycloak:8080/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
+USERS_URL = "http://keycloak:8080/auth/admin/realms/Construc-sw-2023-1/users"
 
 app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/hello', methods=['GET'])
 def hello():
@@ -136,7 +141,10 @@ def delete_user(user_id):
         return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return jsonify({'success': True}), 200
 
-app.run(port=8082, debug=True)
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8085))
+    app.run(host='0.0.0.0', port=8085, debug=True)
 
 
 

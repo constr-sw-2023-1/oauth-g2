@@ -19,3 +19,15 @@ services:
       - grupo2-keycloak-data:/opt/jboss/keycloak/standalone/data
     networks:
       - grupo2
+  # Python
+  python:
+    container_name: python
+    build:
+      context: .
+      dockerfile: DockerFile
+    ports:
+      - 8085:8085
+    networks:
+      - grupo2
+    depends_on:
+      - keycloak
