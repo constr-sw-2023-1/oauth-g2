@@ -3,6 +3,7 @@ package br.com.grupo2.oauth.api.controller;
 import br.com.grupo2.oauth.api.config.RequestToken;
 import br.com.grupo2.oauth.api.config.exception.Grupo2Exception;
 import br.com.grupo2.oauth.api.config.exception.HttpException;
+import br.com.grupo2.oauth.api.constants.EnumError;
 import br.com.grupo2.oauth.api.service.auth.AutenticacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -34,7 +35,7 @@ public class LoginController {
         try {
             return ResponseEntity.ok(authService.requestTokenLogin(requestToken, contentType));
         } catch (Grupo2Exception ex) {
-            throw new HttpException("Não encontrado!", HttpStatus.NOT_FOUND);
+            throw new HttpException("Não encontrado!", EnumError.NOT_FOUND_404);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

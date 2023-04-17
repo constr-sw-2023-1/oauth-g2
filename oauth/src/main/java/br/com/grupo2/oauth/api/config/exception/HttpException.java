@@ -1,5 +1,6 @@
 package br.com.grupo2.oauth.api.config.exception;
 
+import br.com.grupo2.oauth.api.constants.EnumError;
 import org.springframework.http.HttpStatus;
 
 public class HttpException extends RuntimeException {
@@ -20,6 +21,6 @@ public class HttpException extends RuntimeException {
         super(ex);
     }
 
-    public HttpException(String message, HttpStatus httpStatus) {
+    public HttpException(String message, EnumError enumError) {
     }
 }

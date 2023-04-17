@@ -3,6 +3,7 @@ package br.com.grupo2.oauth.api.service.auth;
 import br.com.grupo2.oauth.api.config.RequestToken;
 import br.com.grupo2.oauth.api.config.exception.Grupo2Exception;
 import br.com.grupo2.oauth.api.config.exception.HttpException;
+import br.com.grupo2.oauth.api.constants.EnumError;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -43,10 +44,8 @@ public class AutenticacaoService {
             return response;
 
         } catch (Grupo2Exception ex) {
-            throw new HttpException("Error Http!", HttpStatus.NOT_FOUND);
-        } catch (URISyntaxException | IOException ex) {
-            throw new RuntimeException(ex);
-        } catch (InterruptedException ex) {
+            throw new HttpException("Error Http!", EnumError.NOT_FOUND_404);
+        } catch (URISyntaxException | IOException | InterruptedException ex) {
             throw new RuntimeException(ex);
         }
     }
