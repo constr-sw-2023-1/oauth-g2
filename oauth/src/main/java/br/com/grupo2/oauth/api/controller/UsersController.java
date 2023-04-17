@@ -5,6 +5,7 @@ import br.com.grupo2.oauth.api.DTO.AtualizaUsuarioDTO;
 import br.com.grupo2.oauth.api.DTO.CriacaoUsuarioDTO;
 import br.com.grupo2.oauth.api.config.exception.Grupo2Exception;
 import br.com.grupo2.oauth.api.config.exception.HttpException;
+import br.com.grupo2.oauth.api.constants.EnumError;
 import io.swagger.v3.oas.annotations.Operation;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -41,7 +42,7 @@ public class UsersController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 
         } catch (Grupo2Exception e) {
-            throw new HttpException("Não foi possível fazer a listagem", HttpStatus.NOT_FOUND);
+            throw new HttpException("Não foi possível fazer a listagem", EnumError.NOT_FOUND_404);
         }
     }
 
@@ -56,7 +57,7 @@ public class UsersController {
             UserRepresentation userRepresentation = getUsuarioCriado(criacaoUsuarioDTO);
             keycloak.realm(realm).users().create(userRepresentation);
         } catch (Grupo2Exception e) {
-            throw new HttpException("Não foi possível fazer a listagem", HttpStatus.NOT_FOUND);
+            throw new HttpException("Não foi possível fazer a listagem", EnumError.NOT_FOUND_404);
         }
     }
 
@@ -75,7 +76,7 @@ public class UsersController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 
         } catch (Grupo2Exception ex) {
-            throw new HttpException("Erro ao recuperar dados do usuário", HttpStatus.NOT_FOUND);
+            throw new HttpException("Erro ao recuperar dados do usuário", EnumError.NOT_FOUND_404);
         }
     }
 
@@ -104,7 +105,7 @@ public class UsersController {
             keycloak.realm(realm).users().get(Long.toString(id)).update(atualizaUsuario);
 
         } catch (Grupo2Exception ex) {
-            throw new HttpException("Erro ao atualizar usuário", HttpStatus.NOT_FOUND);
+            throw new HttpException("Erro ao atualizar usuário", EnumError.NOT_FOUND_404);
         }
     }
 
@@ -128,7 +129,7 @@ public class UsersController {
             keycloak.realm(realm).users().get(Long.toString(id)).update(usuarioEncontrado);
 
         } catch (Grupo2Exception ex) {
-            throw new HttpException("Erro ao atualizar a senha!", HttpStatus.NOT_FOUND);
+            throw new HttpException("Erro ao atualizar a senha!", EnumError.NOT_FOUND_404);
         }
     }
 
@@ -145,7 +146,7 @@ public class UsersController {
             keycloak.realm(realm).users().get(Long.toString(id)).remove();
 
         } catch (Grupo2Exception ex) {
-            throw new HttpException("Erro ao Deletar!", HttpStatus.NOT_FOUND);
+            throw new HttpException("Erro ao Deletar!", EnumError.NOT_FOUND_404);
         }
     }
 

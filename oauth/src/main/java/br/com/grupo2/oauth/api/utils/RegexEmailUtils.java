@@ -1,4 +1,4 @@
-package br.com.grupo2.oauth.api.config.utils;
+package br.com.grupo2.oauth.api.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
