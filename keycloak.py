@@ -25,7 +25,7 @@ def hello():
 
 @app.route('/login', methods=['POST'])
 def generate_token():
-    url = TOKEN_URL
+    url = D_TOKEN_URL
     payload = request.form.to_dict()
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     response = requests.post(url, headers=headers, data=payload)
@@ -39,7 +39,7 @@ def generate_token():
 def create_user():
     new_user = {}
     token = request.headers.get('Authorization')
-    url = USERS_URL
+    url = D_USERS_URL
     headers = {'Content-Type': 'application/json', 'Authorization': token}
     payload = request.get_json()
     email = payload.get('email')
@@ -64,12 +64,12 @@ def create_user():
             'location': user_info['location'].split('/')[-1]
         }
     print(new_user)
-    return redirect(USERS_URL + new_user['location'], code=302)
+    return redirect(D_USERS_URL + new_user['location'], code=302)
 
 @app.route('/users', methods=['GET'])
 def get_users():
     token = request.headers.get('Authorization')
-    url = USERS_URL
+    url = D_USERS_URL
     headers = {'Authorization': token}
     response = requests.get(url, headers=headers)
     return jsonify(response.json()), 200
@@ -77,7 +77,7 @@ def get_users():
 @app.route('/users/<user_id>', methods=['GET'])
 def get_user(user_id):
     token = request.headers.get('Authorization')
-    url = USERS_URL + user_id
+    url = D_USERS_URL + user_id
     headers = {'Authorization': token}
     response = requests.get(url, headers=headers)
     if response.status_code == 400:
@@ -93,7 +93,7 @@ def get_user(user_id):
 @app.route('/users/<user_id>', methods=['PUT'])
 def put_user(user_id):
     token = request.headers.get('Authorization')
-    url = USERS_URL + user_id
+    url = D_USERS_URL + user_id
     headers = {'Content-Type': 'application/json', 'Authorization': token}
     payload = request.get_json()
     response = requests.put(url, headers=headers, json=payload)
@@ -111,7 +111,7 @@ def put_user(user_id):
 @app.route('/users/<user_id>', methods=['PATCH'])
 def patch_user(user_id):
     token = request.headers.get('Authorization')
-    url = USERS_URL + user_id
+    url = D_USERS_URL + user_id
     headers = {'Content-Type': 'application/json','Authorization': token}
     payload = request.get_json()
     response = requests.patch(url, headers=headers, json=payload)
@@ -129,7 +129,7 @@ def patch_user(user_id):
 @app.route('/users/<user_id>', methods=['DELETE'])
 def delete_user(user_id):
     token = request.headers.get('Authorization')
-    url = USERS_URL + user_id
+    url = D_USERS_URL + user_id
     headers = {'Authorization': token}
     response = requests.delete(url, headers=headers)
     if response.status_code == 400:
