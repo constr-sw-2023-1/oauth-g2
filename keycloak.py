@@ -3,9 +3,6 @@ import re
 from flask import Flask, request, jsonify, render_template, redirect
 import requests
 
-REALM_NAME = 'Construc-sw-2023-1'
-CLIENT_ID = 'oauth'
-CLIENT_SECRET = 'Wi5qctJ5jdHMpilcacB5lZtrPifypjYb'
 D_SERVER_URL = 'https://keycloak:8080/auth'
 D_TOKEN_URL = 'http://keycloak:8080/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
 D_USERS_URL = "http://keycloak:8080/auth/admin/realms/Construc-sw-2023-1/users/"
