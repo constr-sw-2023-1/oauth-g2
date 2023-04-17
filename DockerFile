@@ -17,4 +17,4 @@ COPY . /app
 ENTRYPOINT [ "python3" ]
 
 EXPOSE 8085
-CMD ["keycloack.py"]
+CMD ["keycloak.py"]
