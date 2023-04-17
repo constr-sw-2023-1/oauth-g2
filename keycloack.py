@@ -22,10 +22,10 @@ def generate_token():
     payload = request.form.to_dict()
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     response = requests.post(url, headers=headers, data=payload)
-    if response.status_code == 401:
-        return jsonify({'Unauthorized': 'Invalid username or password'}), 401
     if response.status_code == 400:
-        return jsonify({'Bad Request': 'Request Structure error'}), 400
+        return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request Structure error'}), 400
+    if response.status_code == 401:
+        return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid username or password'}), 401
     return jsonify(response.json()), 200
 
 
@@ -46,14 +46,14 @@ def create_user():
     # [\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
     # , email):
     if not email or not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-       return jsonify({'error': 'invalid e-mail'}), 400
+       return jsonify({'error_code': 'OA-400','error_description': 'Bad Request: Missing email or badly formated email'}), 400
     payload = request.get_json()
     response = requests.post(url, headers=headers, json=payload)
     #response_json = response.json()
     # userId = response.headers['Location'].split('/')[-1]
     #print(response_json)
     if response.status_code == 409:
-        return jsonify({'error': 'username already exists'}), 409
+        return jsonify({'error_code':'OA-409','error_description' : 'Conflict: This username or email already exists'}), 409
     return jsonify({'success': True, 'user': response.headers}), 201
 
 @app.route('/users', methods=['GET'])
@@ -72,13 +72,13 @@ def get_user(user_id):
     headers = {'Authorization': token}
     response = requests.get(url, headers=headers)
     if response.status_code == 400:
-        return jsonify({'error': 'bad request'}), 400
+        return jsonify({'error_code': 'OA-400','error_description': 'Bad Request: Request structure error'}), 400
     if response.status_code == 401:
-        return jsonify({'error': 'invalid token'}), 401
-    if response.status_code == 404:
-        return jsonify({'error': 'user not found'}), 404
+        return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid Token or username/password'}), 401
     if response.status_code == 403:
-        return jsonify({'error': 'forbidden'}), 403
+        return jsonify({'error_code': 'OA-403','error_description': 'Forbidden: Missing the necessary roles or privilages'}), 403
+    if response.status_code == 404:
+        return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return jsonify(response.json()), 200
 
 # for this to work propperly the POST method must be working and a postman test request still needs to be created
@@ -91,13 +91,13 @@ def put_user(user_id):
     response = requests.get(url, headers=headers, json=payload)
     
     if response.status_code == 400:
-        return jsonify({'error': 'bad request'}), 400
+        return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request structure error'}), 400
     if response.status_code == 401:
-        return jsonify({'error': 'invalid token'}), 401
-    if response.status_code == 404:
-        return jsonify({'error': 'user not found'}), 404
+        return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid Token or username/password'}), 401
     if response.status_code == 403:
-        return jsonify({'error': 'forbidden'}), 403
+        return jsonify({'error_code': 'OA-403','error_description': 'Forbidden: Missing the necessary roles or privilages'}), 403
+    if response.status_code == 404:
+        return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return jsonify({'success': True}), 200
     
 # for this to work propperly the POST method must be working and a postman test request still needs to be created
@@ -110,13 +110,13 @@ def patch_user(user_id):
     response = requests.get(url, headers=headers, json=payload)
     
     if response.status_code == 400:
-        return jsonify({'error': 'bad request'}), 400
+        return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request structure error'}), 400
     if response.status_code == 401:
-        return jsonify({'error': 'invalid token'}), 401
-    if response.status_code == 404:
-        return jsonify({'error': 'user not found'}), 404
+        return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid Token or username/password'}), 401
     if response.status_code == 403:
-        return jsonify({'error': 'forbidden'}), 403
+        return jsonify({'error_code': 'OA-403','error_description': 'Forbidden: Missing the necessary roles or privilages'}), 403
+    if response.status_code == 404:
+        return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return jsonify({'success': True}), 200
 
 # for this to work propperly the POST method must be working and a postman test request still needs to be created
@@ -127,13 +127,13 @@ def delete_user(user_id):
     headers = {'Authorization': token}
     response = requests.delete(url, headers=headers)
     if response.status_code == 400:
-        return jsonify({'error': 'bad request'}), 400
+        return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request structure error'}), 400
     if response.status_code == 401:
-        return jsonify({'error': 'invalid token'}), 401
-    if response.status_code == 404:
-        return jsonify({'error': 'user not found'}), 404
+        return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid Token or username/password'}), 401
     if response.status_code == 403:
-        return jsonify({'error': 'forbidden'}), 403
+        return jsonify({'error_code': 'OA-403','error_description': 'Forbidden: Missing the necessary roles or privilages'}), 403
+    if response.status_code == 404:
+        return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return jsonify({'success': True}), 200
 
 app.run(port=8082, debug=True)
