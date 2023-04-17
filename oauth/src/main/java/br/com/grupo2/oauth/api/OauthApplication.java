@@ -7,6 +7,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableSwagger2
 public class OauthApplication {
 
 	public static void main(String[] args) {
