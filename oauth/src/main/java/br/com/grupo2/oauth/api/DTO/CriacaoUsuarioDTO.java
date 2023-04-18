@@ -6,13 +6,13 @@ public class CriacaoUsuarioDTO {
 
     private String bearerToken;
     @JsonProperty("username")
-    public String username;
+    private String username;
     @JsonProperty("password")
-    public String password;
+    private String password;
     @JsonProperty("first-name")
-    public String firstName;
+    private String firstName;
     @JsonProperty("last-name")
-    public String lastName;
+    private String lastName;
 
     public CriacaoUsuarioDTO() {}
 
