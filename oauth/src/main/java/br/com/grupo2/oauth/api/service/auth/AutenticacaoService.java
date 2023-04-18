@@ -1,9 +1,11 @@
 package br.com.grupo2.oauth.api.service.auth;
 
+import br.com.grupo2.oauth.api.config.RefreshToken;
 import br.com.grupo2.oauth.api.config.RequestToken;
 import br.com.grupo2.oauth.api.config.exception.Grupo2Exception;
 import br.com.grupo2.oauth.api.config.exception.HttpException;
 import br.com.grupo2.oauth.api.constants.EnumError;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @Service
 public class AutenticacaoService {
+
 
     public HttpResponse<?> requestTokenLogin(RequestToken requestToken, String contentType) {
 
