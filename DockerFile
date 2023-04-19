@@ -1,5 +1,5 @@
 # start by pulling the python image
-FROM python:3.8-alpine
+FROM python:3.11-bullseye
 
 # create a directory for the app
 WORKDIR /app

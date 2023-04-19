@@ -1,6 +1,8 @@
 import os
 import re
 from flask import Flask, request, jsonify, render_template, redirect
+from flasgger import Swagger
+from flask_swagger_ui import get_swaggerui_blueprint
 import requests
 
 D_SERVER_URL = 'https://keycloak:8080/auth'
@@ -11,6 +13,34 @@ TOKEN_URL = 'http://localhost:8090/auth/realms/Construc-sw-2023-1/protocol/openi
 USERS_URL = "http://localhost:8090/auth/admin/realms/Construc-sw-2023-1/users/"
 
 app = Flask(__name__)
+swagger = Swagger(app)
+
+SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
+API_URL = 'http://petstore.swagger.io/v2/swagger.json'  # Our API url (can of course be a local resource)
+
+# Call factory function to create our blueprint
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    API_URL,
+    config={  # Swagger UI config overrides
+        'app_name': "Test application"
+    },
+    # oauth_config={  # OAuth config. See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
+    #    'clientId': "your-client-id",
+    #    'clientSecret': "your-client-secret-if-required",
+    #    'realm': "your-realms",
+    #    'appName': "your-app-name",
+    #    'scopeSeparator': " ",
+    #    'additionalQueryStringParams': {'test': "hello"}
+    # }
+)
+
+app.register_blueprint(swaggerui_blueprint)
+
+
+@app.route('/docs')
+def docs():
+    return swagger.ui()
 
 @app.route('/')
 def home():
