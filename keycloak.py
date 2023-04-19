@@ -58,7 +58,6 @@ def get_resumed_user(user_id):
         return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
     return Response(json.dumps(user), status=200, mimetype='application/json')
 
-
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -97,8 +96,7 @@ def create_user():
         new_user = {
             'location': user_info['location'].split('/')[-1]
         }
-    print(new_user)
-    return get_full_user(new_user['location']), 201
+    return get_resumed_user(new_user['location']), 201
 
 @app.route('/users', methods=['GET'])
 def get_users():
@@ -108,7 +106,6 @@ def get_users():
     response = requests.get(url, headers=headers)
     return jsonify(response.json()), 200
 
-# WORKING AS INTENDED
 @app.route('/users/<user_id>', methods=['GET'])
 def use_get_user(user_id):
     return get_resumed_user(user_id)
@@ -120,7 +117,6 @@ def put_user(user_id):
     headers = {'Content-Type': 'application/json', 'Authorization': token}
     payload = request.get_json()
     response = requests.put(url, headers=headers, json=payload)
-    
     if response.status_code == 400:
         return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request structure error'}), 400
     if response.status_code == 401:
@@ -129,10 +125,8 @@ def put_user(user_id):
         return jsonify({'error_code': 'OA-403','error_description': 'Forbidden: Missing the necessary roles or privilages'}), 403
     if response.status_code == 404:
         return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
-    return jsonify(get_resumed_user(user_id)), 200
-    
+    return get_resumed_user(user_id), 200
 
-# ADD THE USER RETURN HERE ASWELL
 @app.route('/users/<user_id>', methods=['PATCH'])
 def patch_user(user_id):
     token = request.headers.get('Authorization')
@@ -149,7 +143,7 @@ def patch_user(user_id):
         return jsonify({'error_code': 'OA-403','error_description': 'Forbidden: Missing the necessary roles or privilages'}), 403
     if response.status_code == 404:
         return jsonify({'error_code': 'OA-404','error_description': 'Not Found: User not Found'}), 404
-    return jsonify({'success': True}), 200
+    return get_resumed_user(user_id), 200
 
 @app.route('/users/<user_id>', methods=['DELETE'])
 def delete_user(user_id):

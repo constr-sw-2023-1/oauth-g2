@@ -106,7 +106,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"asufsdfasdhads\",\n    \"email\": \"aufhdasdsda@gmail.com\",\n    \"firstName\": \"sdafsasta\",\n    \"lastName\": \"fdssasfsff\",\n     \"credentials\": [{\n        \"type\": \"password\",\n        \"value\": \"password\",\n        \"temporary\": false\n    }]\n}",
+					"raw": "{\n    \"username\": \"cleyson.oliveira\",\n    \"email\": \"cleycley@ages.com\",\n    \"firstName\": \"Cley\",\n    \"lastName\": \"Oliveira\",\n     \"credentials\": [{\n        \"type\": \"password\",\n        \"value\": \"p4ssw0rd\",\n        \"temporary\": false\n    }]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -197,7 +197,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"NOMEEMCAPS\",\n    \"email\": \"EMAILDEDESTAQUE@gmail.com\",\n    \"firstName\": \"PRIMEIRONOME\",\n    \"lastName\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAA\"\n}",
+					"raw": "{\n    \"username\": \"CLEYSON\",\n    \"email\": \"agrvai@ages.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -218,7 +218,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Update One User Password",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -234,7 +234,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"credentials\": [{\n        \"type\": \"password\",\n        \"value\": \"BIGANDSECUREPASSWORD\",\n        \"temporary\": false\n    }]\n}",
+					"raw": "{\n    \"credentials\": [{\n        \"type\": \"password\",\n        \"value\": \"48D2A5BBCF422CCD1B69E2A82FB90BAFB52384953E77E304BEF856084BE052B6\",\n        \"temporary\": false\n    }]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -255,7 +255,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Delete One User",
 			"request": {
 				"auth": {
 					"type": "bearer",
