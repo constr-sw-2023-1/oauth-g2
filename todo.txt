@@ -1,0 +1,8 @@
+
+
+
+validar se o delete ta deletando todo mundo ou o próprio admin(e saber se ele deveria poder se deletar)
+
+adicionar retorno do usuário no método put
+
+corrigir redirect para que ele funcione de maneira apropriada no deploy do docker
