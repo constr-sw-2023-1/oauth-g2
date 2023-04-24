@@ -1,7 +1,11 @@
 # oauth-g2
 
 ## Environment
-tested on localhost python 3.8.8('base':conda)
+Tested on: 
+- Localhost with python 3.11.2
+- Docker with python 3.11-bullseye
 
-keycloak running on localhost:8090
-flask running on localhost:8085
+For user interfaces:
+
+- Keycloak running on localhost:8090
+- Flask running on localhost:8085

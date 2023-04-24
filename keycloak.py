@@ -57,7 +57,7 @@ def generate_token():
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     response = requests.post(url, headers=headers, data=payload)
     if response.status_code == 400:
-        return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request Structure error'}), 400
+        return jsonify({'error_code': 'OA-400','error_description': 'Bad Request: Request Structure error'}), 400
     if response.status_code == 401:
         return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid username or password'}), 401
     return jsonify(response.json()), 200
