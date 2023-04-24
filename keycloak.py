@@ -4,18 +4,8 @@ import os
 import re
 from flask import Flask, Response, request, jsonify, render_template
 import requests
-import jwt
-import time
-from jwt import PyJWKClient
-
-# Environment variables to be used for keycloak authentication
-CLIENT_ID = "oauth"
-CLIENT_SECRET = "Wi5qctJ5jdHMpilcacB5lZtrPifypjYb"
-refresh_token = ""
-token_expiration_time = time.time()
 
 # URLs to be used inside docker
-DOCKER_PUBLIC_KEY_URL = 'http://keycloak:8080/auth/realms/Construc-sw-2023-1/protocol/openid-connect/certs'
 DOCKER_SERVER_URL = 'https://keycloak:8080/auth'
 DOCKER_TOKEN_URL = 'http://keycloak:8080/auth/realms/Construc-sw-2023-1/protocol/openid-connect/token'
 DOCKER_USERS_URL = 'http://keycloak:8080/auth/admin/realms/Construc-sw-2023-1/users/'
@@ -29,34 +19,11 @@ USERS_URL = 'http://localhost:8090/auth/admin/realms/Construc-sw-2023-1/users/'
 # Creating the flask app
 app = Flask(__name__)
 
-def refresh_token(refresh_token):
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    data = {
-        'grant_type': 'refresh_token',
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
-        'refresh_token': refresh_token
-    }
-    response = requests.post(DOCKER_TOKEN_URL, headers=headers, data=data)
-
-    if response.status_code == 200:
-        refresh_token = response.json()['refresh_token']
-        access_token = response.json()['access_token']
-        decoded_token = jwt.decode(access_token, verify=False, algorithms=["RS256"])
-        token_expiration_time = decoded_token["exp"]
-        return response.json()['access_token']
-    else:
-        return jsonify({'error_code': 'OA-500', 'error_description' : 'Internal Server Error: Something went wrong while trying to refresh your token, request a new one'}), 500
-
 # This function is used to get the user info to be returned as a full user
 def get_full_user(user_id):
 
     # Requesting the user info
     token = request.headers.get('Authorization')
-
-    current_time = time.time()
-    if current_time > token_expiration_time:
-        token = refresh_token(refresh_token)
 
     request_url = DOCKER_USERS_URL + user_id
     headers = {'Authorization': token}
@@ -78,10 +45,6 @@ def get_resumed_user(user_id):
 
     # Requesting the user info
     token = request.headers.get('Authorization')
-
-    current_time = time.time()
-    if current_time > token_expiration_time:
-        token = refresh_token(refresh_token)
 
     request_url = DOCKER_USERS_URL + user_id
     headers = {'Authorization': token}
@@ -109,8 +72,6 @@ def get_resumed_user(user_id):
     if response.status_code == 400:
         return jsonify({'error_code': 'OA-400','error_description': 'Bad Request: Request structure error'}), 400
     if response.status_code == 401:
-        refresh_token = request.headers.get('Refresh-Token')
-
         return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid Token or username/password'}), 401
     if response.status_code == 403:
         return jsonify({'error_code': 'OA-403','error_description': 'Forbidden: Missing the necessary roles or privilages'}), 403
@@ -143,13 +104,6 @@ def generate_token():
         return jsonify({'error_code': 'OA-404','error_description': 'Bad Request: Request Structure error'}), 400
     if response.status_code == 401:
         return jsonify({'error_code': 'OA-401','error_description': 'Unauthorized: Invalid username or password'}), 401
-    
-    jkws_client = PyJWKClient(DOCKER_PUBLIC_KEY_URL)
-    signing_key = jkws_client.get_signing_key_from_jwt(response.json()['access_token'])
-    decoded_jwt = jwt.decode(response.json()['access_token'], signing_key.key, algorithms=["RS256"])
-    token_expiration_time = decoded_jwt["exp"]
-    refresh_token = response.json()['refresh_token']
-
     return jsonify(response.json()), 200
 
 # users endpoint to create a new user
@@ -160,11 +114,6 @@ def create_user():
     # Getting the token from the request header
     token = request.headers.get('Authorization')
     request_url = DOCKER_USERS_URL
-
-    current_time = time.time()
-    if current_time > token_expiration_time:
-        token = refresh_token(refresh_token)
-
     headers = {'Content-Type': 'application/json', 'Authorization': token}
 
     # Formating the payload and retrieving the email to be used in the exception handling
@@ -192,10 +141,6 @@ def get_users():
     token = request.headers.get('Authorization')
     url = DOCKER_USERS_URL
 
-    current_time = time.time()
-    if current_time > token_expiration_time:
-        token = refresh_token(refresh_token)
-
     headers = {'Authorization': token}
     response = requests.get(url, headers=headers)
     return jsonify(response.json()), 200
@@ -212,10 +157,6 @@ def put_user(user_id):
     # Request
     token = request.headers.get('Authorization')
     url = DOCKER_USERS_URL + user_id
-
-    current_time = time.time()
-    if current_time > token_expiration_time:
-        token = refresh_token(refresh_token)
 
     headers = {'Content-Type': 'application/json', 'Authorization': token}
     
@@ -242,10 +183,6 @@ def patch_user(user_id):
     token = request.headers.get('Authorization')
     url = DOCKER_USERS_URL + user_id
 
-    current_time = time.time()
-    if current_time > token_expiration_time:
-        token = refresh_token(refresh_token)
-
     # Formating the payload sent to our api to be sent to the keycloak server on the correct format
     headers = {'Content-Type': 'application/json','Authorization': token}
     payload = request.get_json()
@@ -269,10 +206,6 @@ def delete_user(user_id):
     # Request
     token = request.headers.get('Authorization')
     url = DOCKER_USERS_URL + user_id
-
-    current_time = time.time()
-    if current_time > token_expiration_time:
-        token = refresh_token(refresh_token)
 
     headers = {'Authorization': token}
     response = requests.delete(url, headers=headers)
