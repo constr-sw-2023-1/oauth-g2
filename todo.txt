@@ -1,5 +1,6 @@
 TODO:
 
-1 - validar se o ADMIN consegue se deletar pelo endpoint
-2 - criar arquivo para o swagger
-3 - validar funcionalidade do swagger
+1 - Validar se o ADMIN consegue se deletar pelo endpoint
+    - sim, ele consegue se deletar, é possível validar se ele mesmo está se deletando?
+2 - Criar arquivo para o swagger
+3 - Validar funcionalidade do swagger
