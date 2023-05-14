@@ -19,14 +19,14 @@ services:
       - grupo2-keycloak-data:/opt/jboss/keycloak/standalone/data
     networks:
       - grupo2
-  # Springboot
-  springboot:
-    container_name: springboot
+  # Python
+  python:
+    container_name: python
     build:
       context: .
       dockerfile: DockerFile
     ports:
-      - 8081:8081
+      - 8085:8085
     networks:
       - grupo2
     depends_on:

@@ -1,6 +1,21 @@
-FROM maven:3.8-openjdk-17 as maven
-COPY ./oauth/pom.xml ./pom.xml
-COPY ./oauth/src ./src
-RUN mvn package -Dmaven.test.skip=true -q
-EXPOSE 8081
-ENTRYPOINT ["java","-jar","./target/oauth-0.0.1-SNAPSHOT.jar"]
+# start by pulling the python image
+FROM python:3.11-bullseye
+
+# create a directory for the app
+WORKDIR /app
+
+# copy the requirements file into the image
+COPY ./requirements.txt /app/requirements.txt
+
+# install the dependencies and packages in the requirements file
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# copy every content from the local file to the image
+COPY . /app
+
+# configure the container to run in an executed manner
+ENTRYPOINT [ "python3" ]
+
+EXPOSE 8085
+CMD ["keycloak.py"]
